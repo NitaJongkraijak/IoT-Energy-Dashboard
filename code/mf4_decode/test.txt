@@ -1,0 +1,53 @@
+WITH avg_latitudem AS (
+    SELECT 
+        AVG(Floor(nullif(tbl_${device:csv}_can1_vbox_1.latitude,0)/100)+(((nullif(tbl_${device:csv}_can1_vbox_1.latitude,0)/100)%1)/60*100)) AS avg_latitudem
+    FROM tbl_${device:csv}_can1_vbox_1
+    WHERE $__timeFilter(tbl_${device:csv}_can1_vbox_1.t)
+),
+avg_longitudem AS (
+    SELECT AVG(Floor(nullif(tbl_${device:csv}_can1_vbox_2.longitude,0)/100)+(((nullif(tbl_${device:csv}_can1_vbox_2.longitude,0)/100)%1)/60*100)) AS avg_longitudem
+    FROM tbl_${device:csv}_can1_vbox_2
+    WHERE $__timeFilter(tbl_${device:csv}_can1_vbox_2.t)
+),
+latitude_std_dev AS (
+    SELECT 
+        SQRT(
+            AVG(POWER(Floor(nullif(tbl_${device:csv}_can1_vbox_1.latitude,0)/100)+(((nullif(tbl_${device:csv}_can1_vbox_1.latitude,0)/100)%1)/60*100) - (SELECT avg_latitudem FROM avg_latitudem), 2))
+        ) AS latitude_std_dev
+    FROM tbl_${device:csv}_can1_vbox_1
+    WHERE $__timeFilter(tbl_${device:csv}_can1_vbox_1.t)
+),
+longitude_std_dev AS (
+    SELECT 
+        SQRT(
+            AVG(POWER(Floor(nullif(tbl_${device:csv}_can1_vbox_2.longitude,0)/100)+(((nullif(tbl_${device:csv}_can1_vbox_2.longitude,0)/100)%1)/60*100) - (SELECT avg_longitudem FROM avg_longitudem), 2))
+        ) AS longitude_std_dev
+    FROM tbl_${device:csv}_can1_vbox_2
+    WHERE $__timeFilter(tbl_${device:csv}_can1_vbox_2.t)
+)
+
+SELECT
+    $__timeGroup(tbl_${device:csv}_can1_vbox_1.t, $__interval) as Time,
+    AVG(Floor(nullif(tbl_${device:csv}_can1_vbox_1.latitude,0)/100)+(((nullif(tbl_${device:csv}_can1_vbox_1.latitude,0)/100)%1)/60*100)) as AVG_latitudem1,
+    AVG(Floor(nullif(tbl_${device:csv}_can1_vbox_2.longitude,0)/100)+(((nullif(tbl_${device:csv}_can1_vbox_2.longitude,0)/100)%1)/60*100)) as AVG_longitudem1,
+    AVG(tbl_${device:csv}_can1_vbox_2.velocity_kmh) as avg_speed
+FROM
+    tbl_${device:csv}_can1_vbox_1
+INNER JOIN tbl_${device:csv}_can1_vbox_2
+ON tbl_${device:csv}_can1_vbox_1.t  = tbl_${device:csv}_can1_vbox_2.t
+CROSS JOIN avg_latitudem
+CROSS JOIN avg_longitudem
+CROSS JOIN latitude_std_dev
+CROSS JOIN longitude_std_dev
+WHERE
+    tbl_${device:csv}_can1_vbox_1.date_created BETWEEN $__rawTimeFrom('yyyy/MM/dd') AND $__rawTimeTo('yyyy/MM/dd') 
+    AND
+    $__timeFilter(tbl_${device:csv}_can1_vbox_1.t)
+    AND 
+    Floor(nullif(tbl_${device:csv}_can1_vbox_2.longitude,0)/100)+(((nullif(tbl_${device:csv}_can1_vbox_2.longitude,0)/100)%1)/60*100) BETWEEN avg_longitudem.avg_longitudem -2* longitude_std_dev.longitude_std_dev AND  avg_longitudem.avg_longitudem + 2* longitude_std_dev.longitude_std_dev
+    AND 
+    Floor(nullif(tbl_${device:csv}_can1_vbox_1.latitude,0)/100)+(((nullif(tbl_${device:csv}_can1_vbox_1.latitude,0)/100)%1)/60*100) BETWEEN avg_latitudem.avg_latitudem -2* latitude_std_dev.latitude_std_dev AND  avg_latitudem.avg_latitudem + 2* latitude_std_dev.latitude_std_dev
+GROUP BY
+    $__timeGroup(tbl_${device:csv}_can1_vbox_1.t, $__interval)    
+ORDER BY
+    Time ASC

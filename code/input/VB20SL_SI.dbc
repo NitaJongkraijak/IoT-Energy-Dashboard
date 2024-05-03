@@ -1,0 +1,106 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYNNNNNNNNNN/4/%%%/4/'%**4NNN///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: VBOX_III
+
+
+BO_ 775 VBOX_7: 8 Vector__XXX
+ SG_ Yaw_rate : 23|16@0- (0.01,0) [0|0] "deg/s" Vector__XXX
+ SG_ Lateral_vel : 7|16@0- (0.01,0) [0|0] "Km/h" Vector__XXX
+
+BO_ 774 VBOX_6: 8 Vector__XXX
+ SG_ Pitch_angle : 55|16@0- (0.01,0) [0|0] "deg" Vector__XXX
+ SG_ Slip_angle : 39|16@0- (0.01,0) [0|0] "deg" Vector__XXX
+ SG_ True_heading : 23|16@0+ (0.01,0) [0|0] "" Vector__XXX
+
+BO_ 773 VBOX_5: 8 VBOX_III
+ SG_ Trig_Vel_Kmh : 55|16@0+ (0.01852,0) [0|1213.7082] "Km/h" Vector__XXX
+ SG_ Trig_time : 39|16@0+ (0.01,0) [0|655.35] "Secs" Vector__XXX
+ SG_ Distance : 7|32@0+ (7.8125E-005,0) [0|335544] "Metres" Vector__XXX
+
+BO_ 772 VBOX_4: 8 VBOX_III
+ SG_ Lateral_acceleration : 55|16@0- (0.01,0) [-327.68|327.67] "G"  VBOX_III
+ SG_ Longitudinal_acceleration : 39|16@0- (0.01,0) [-327.68|327.67] "G"  VBOX_III
+ SG_ Trig_Dist : 7|32@0+ (7.8125E-005,0) [0|335544] "Metres"  VBOX_III
+
+BO_ 771 VBOX_3: 8 VBOX_III
+ SG_ DGPS : 61|1@0+ (1,0) [0|0] "On"  VBOX_III
+ SG_ Brake_trigger : 60|1@0+ (1,0) [0|0] "On"  VBOX_III
+ SG_ Vertical_Velocity : 31|16@0- (0.01,0) [0|655.36] "m/s"  VBOX_III
+ SG_ Altitude_WGS84 : 7|24@0- (0.01,0) [0|42949700] "metres"  VBOX_III
+
+BO_ 770 VBOX_2: 8 VBOX_III
+ SG_ East_West : 7|1@0+ (1,0) [0|0] "East" Vector__XXX
+ SG_ Heading : 55|16@0+ (0.01,0) [0|359.99] "Degrees"  VBOX_III
+ SG_ Velocity_Kmh : 39|16@0+ (0.01852,0) [0|1213.7082] "Km/h"  VBOX_III
+ SG_ Longitude : 6|31@0+ (1E-005,0) [0|21474.83647] "Degrees"  VBOX_III
+
+BO_ 769 VBOX_1: 8 VBOX_III
+ SG_ North_South : 39|1@0+ (1,0) [0|0] "South" Vector__XXX
+ SG_ Latitude : 38|31@0+ (1E-005,0) [0|21474.83647] "Degrees"  VBOX_III
+ SG_ Time_Since_Midnight : 15|24@0+ (0.01,0) [0|0] "Seconds"  VBOX_III
+ SG_ Sats : 7|8@0+ (1,0) [0|12] "Sats"  VBOX_III
+
+
+
+CM_ "Racelogic VBOX III";
+CM_ SG_ 772 Lateral_acceleration "Lateral acceleration in G";
+CM_ SG_ 772 Longitudinal_acceleration "Longitudinal acceleration in G";
+CM_ SG_ 772 Trig_Dist "Distance in metres";
+CM_ SG_ 771 DGPS "DGPS lock status
+
+1 = DGPS active
+0 = DGPS not active";
+CM_ SG_ 771 Brake_trigger "Brake trigger switch status";
+CM_ SG_ 771 Vertical_Velocity "Vertical velocityin metres/sec";
+CM_ SG_ 771 Altitude_WGS84 "Altitude in metres
+
+ref WGS84
+";
+CM_ SG_ 770 Heading "Heading in degrees";
+CM_ SG_ 770 Velocity_Kmh "Velocity (Knots)
+1 Knot = 1.852 Km/h
+
+";
+CM_ SG_ 770 Longitude "Longitude
+MMMMM.MMMMM
+
+Example 5882246 = 58.82246 minutes";
+CM_ BO_ 769 "VBOX Message 1";
+CM_ SG_ 769 Latitude "Latitude MMMM.MMMMM
+Example 311924579 = 3119.24579 Minutes";
+CM_ SG_ 769 Time_Since_Midnight "Time UTC";
+CM_ SG_ 769 Sats "Satelites in view";
+
