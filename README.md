@@ -6,5 +6,5 @@
 - secrets.h [Fill with Amazon Root CA 1, Device Certificate, Device Private Key ]
 
 ## Folder: code ##
-Descreiption: Python-based MF4 decoded approach using asammdf libary
+Descreiption: Python-based MF4 decoded approach using asammdf library
 - decodepart.py is final version
